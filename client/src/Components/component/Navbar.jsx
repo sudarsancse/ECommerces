@@ -6,7 +6,14 @@ function Navbar() {
   const [visible, setVisible] = useState(false);
   return (
     <div className=" flex items-center justify-between py-5 font-medium">
-      <img src={assets.logo} className=" w-[249px] h-[71px]" alt="brand-logo" />
+      <Link to="/">
+        <img
+          src={assets.logo}
+          className=" w-[120px] sm:w-[130px] sm:h-[61px] lg:w-[249px] lg:h-[71px] h-[50px]"
+          alt="brand-logo"
+        />
+      </Link>
+
       <ul className=" hidden sm:flex gap-5 text-sm text-gray-700">
         <NavLink to="/" className=" flex flex-col items-center gap-1 uppercase">
           <p>Home</p>
