@@ -59,6 +59,7 @@ function Product() {
 
   useEffect(() => {
     fetchProductData();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [productId, products]);
 
   return productData ? (

@@ -38,7 +38,7 @@ function App() {
         <Route path="/order" element={<Orders />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/contact" element={<Contect />} />
-        <Route path="/placeorder" element={<PlaceOrder />} />
+        <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/collection" element={<Collection />} />
       </Routes>
