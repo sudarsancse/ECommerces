@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ShopContext } from "../contex/ShopContex";
 import { assets } from "../assets/assets";
 import RelatedProduct from "../component/RelatedProduct";
+import { toast } from "react-toastify";
 
 function Product() {
   const { productId } = useParams();
@@ -10,6 +11,23 @@ function Product() {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  const [sizeError, setSizeError] = useState(false);
+
+  const handleSizeSelect = (selectedSize) => {
+    setSize(selectedSize);
+    setSizeError(false);
+  };
+
+  const handleAddToCart = () => {
+    if (!size) {
+      setSizeError(true);
+      toast.error("Please select a size before adding to cart.");
+    } else {
+      setSizeError(false);
+      addToCart(productData._id, size);
+      toast.success("Product added to cart successfully!");
+    }
+  };
 
   const fetchProductData = async () => {
     products.map((item) => {
@@ -69,12 +87,18 @@ function Product() {
           </p>
           <div className=" flex flex-col gap-4 my-8">
             <p>Select Size</p>
-            <div className=" flex gap-2">
+            <div className=" flex  gap-2">
               {productData.sizes.map((item, index) => (
                 <button
-                  onClick={() => setSize(item)}
+                  onClick={() => handleSizeSelect(item)}
                   className={` border rounded-full py-2 px-4 ${
-                    item === size ? " bg-black text-white" : "bg-gray-100"
+                    item === size
+                      ? " bg-black text-white"
+                      : `bg-gray-100 ${
+                          sizeError
+                            ? "border-red-500 border-2 shake"
+                            : "border-gray-300"
+                        }`
                   }`}
                   key={index}
                 >
@@ -84,7 +108,7 @@ function Product() {
             </div>
           </div>
           <button
-            onClick={() => addToCart(productData._id, size)}
+            onClick={handleAddToCart}
             className=" uppercase bg-black text-white px-8 py-3 text-sm active:bg-gray-700 "
           >
             Add to cart
