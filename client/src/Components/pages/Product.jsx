@@ -21,11 +21,29 @@ function Product() {
   const handleAddToCart = () => {
     if (!size) {
       setSizeError(true);
-      toast.error("Please select a size before adding to cart.");
+      toast.error("Please select a size before adding to cart.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       setSizeError(false);
       addToCart(productData._id, size);
-      toast.success("Product added to cart successfully!");
+      toast.success("Product added to cart successfully!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
