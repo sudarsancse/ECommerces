@@ -59,6 +59,8 @@ function Product() {
 
   useEffect(() => {
     fetchProductData();
+    setSize("");
+    setSizeError(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [productId, products]);
 
