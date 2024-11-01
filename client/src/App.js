@@ -11,7 +11,7 @@ import Collection from "./Components/pages/Collection";
 import Navbar from "./Components/component/Navbar";
 import Footer from "./Components/component/Footer";
 import SearchBar from "./Components/component/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {

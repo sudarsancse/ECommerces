@@ -1,8 +1,15 @@
 import express from "express";
-import { UserData } from "../Controls/user.js";
+import { LoginUser, RegisterUser, AdminLogin } from "../Controls/user.js";
 
 const routes = express.Router();
 
-routes.post("/data", UserData);
+//----Route for Register user-----//
+routes.post("/register", RegisterUser);
+
+//----Route for login -user-----//
+routes.post("/login", LoginUser);
+
+// TODOs ----Route for Admin login -----//
+routes.post("/admin", AdminLogin);
 
 export default routes;
