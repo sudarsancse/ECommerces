@@ -66,8 +66,30 @@ export const RegisterUser = async (req, res) => {
 
 //----Route for login -user-----//
 export const LoginUser = async (req, res) => {
-  const { email, password } = req.body;
-  console.log(req.body);
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({
+      $or: [{ email: email }, { number: email }],
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    // Validate the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (isPasswordValid) {
+      const token = createToken(user._id);
+      res.json({ success: true, token });
+    } else {
+      res.json({ success: false, message: " invalid" });
+    }
+  } catch (error) {
+    console.log(error);
+
+    res.json({ success: false, message: error.message });
+  }
 };
 
 // TODOs ----Route for Admin login -----//

@@ -33,9 +33,6 @@ function Login() {
     if (!email) {
       return toast.error("Please enter your email");
     }
-    if (!email.includes("@")) {
-      return toast.error("Please enter a valid email");
-    }
     if (currentState === "Sign up" && !number) {
       return toast.error("Please enter your phone number");
     }
@@ -92,28 +89,6 @@ function Login() {
       console.log(error);
       toast.error(error.message);
     }
-
-    // try {
-    //   const res = await fetch("/register", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-
-    //   const data = await res.json();
-    //   console.log(data);
-    //   if (data.success === false) {
-    //     toast.error(data.message);
-    //     return;
-    //   } else {
-    //     toast.success(data.message);
-    //   }
-    //   toast.error(null);
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
   };
 
   return (
