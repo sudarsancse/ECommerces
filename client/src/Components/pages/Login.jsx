@@ -39,6 +39,20 @@ function Login() {
     if (!password) {
       return toast.error("Please enter your password");
     }
+    if (!/[A-Z]/.test(password)) {
+      return toast.error(
+        "Password must include at least one uppercase letter."
+      );
+    }
+    if (!/\d/.test(password)) {
+      return toast.error("Password must include at least one digit.");
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return toast.error(
+        "Password must include at least one special character."
+      );
+    }
     if (password.length < 8) {
       return toast.error(
         "Please enter a stronger password (at least 8 characters)"

@@ -15,7 +15,7 @@ export const RegisterUser = async (req, res) => {
   try {
     const { name, email, number, password } = req.body;
 
-    console.log(req.body);
+    /* console.log(req.body); */
 
     const existUser = await User.findOne({ email });
 
