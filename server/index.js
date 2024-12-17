@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 import routes from "./Routers/routes.js";
+import productRoutes from "./Routers/productRoute.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const MONGO = process.env.MONGO_URL;
@@ -21,7 +22,7 @@ mongoose
     console.error(`Connection failed ${error}`);
   });
 
-//-----CLOUDINARY CONNECTION-----//
+// *-----CLOUDINARY CONNECTION-----//
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -31,7 +32,9 @@ cloudinary.config({
 app.use(express.json());
 app.use(cors());
 
+//! -------------- ALL ROUTES--------------
 app.use("/", routes);
+app.use("/", productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port Number : ${PORT}`);
