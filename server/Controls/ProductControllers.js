@@ -71,7 +71,15 @@ export const listProduct = async (req, res) => {
   }
 };
 //! function for removing product
-export const removingProduct = async (req, res) => {};
+export const removingProduct = async (req, res) => {
+  try {
+    await productModel.findByIdAndDelete(req.body.id);
+    res.json({ success: true, message: "product removed Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // TODOs function for single product
 
