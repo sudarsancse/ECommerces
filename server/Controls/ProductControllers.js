@@ -60,8 +60,16 @@ export const addProduct = async (req, res) => {
   }
 };
 
-// * function list produce
-export const listProduct = async (req, res) => {};
+// * function list produce (GET req)
+export const listProduct = async (req, res) => {
+  try {
+    const products = await productModel.find({});
+    res.json({ success: true, message: "Add product", products });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 //! function for removing product
 export const removingProduct = async (req, res) => {};
 
