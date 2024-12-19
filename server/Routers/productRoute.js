@@ -20,13 +20,13 @@ productRoutes.post(
   addProduct
 );
 
-// * LIST PRODUCT
-productRoutes.get("/listProduct", listProduct);
-
 //! REMOVING PRODUCTS
 productRoutes.post("/removingProduct", removingProduct);
 
 // TODO SINGLE PRODUCT
 productRoutes.post("/singleProduct", singleProduct);
+
+// * LIST PRODUCT
+productRoutes.get("/listProduct", listProduct);
 
 export default productRoutes;

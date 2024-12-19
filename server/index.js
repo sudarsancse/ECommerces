@@ -8,7 +8,7 @@ import productRoutes from "./Routers/productRoute.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const MONGO = process.env.MONGO_URL;
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
