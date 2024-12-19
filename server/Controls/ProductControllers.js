@@ -83,4 +83,13 @@ export const removingProduct = async (req, res) => {
 
 // TODOs function for single product
 
-export const singleProduct = async (req, res) => {};
+export const singleProduct = async (req, res) => {
+  try {
+    const product = req.body.id;
+    const data = await productModel.findById(product);
+    res.json({ success: true, message: "product found Successfully", data });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
