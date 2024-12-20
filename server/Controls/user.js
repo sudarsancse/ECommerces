@@ -87,12 +87,25 @@ export const LoginUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-
     res.json({ success: false, message: error.message });
   }
 };
 
 // TODOs ----Route for Admin login -----//
 export const AdminLogin = async (req, res) => {
-  res.json({ Message: "sudarsan 3" });
+  try {
+    const { email, password } = req.body;
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = jwt.sign({ email, password }, process.env.JSONWEBTOKEN);
+      res.json({ success: true, token });
+    } else {
+      res.json({ success: false, message: "Invalid credential" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 };
