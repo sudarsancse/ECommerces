@@ -34,7 +34,7 @@ app.use(cors());
 
 //! -------------- ALL ROUTES--------------
 app.use("/", routes);
-app.use("/", productRoutes);
+app.use("/add", productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port Number : ${PORT}`);
