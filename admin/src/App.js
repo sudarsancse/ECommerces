@@ -8,6 +8,8 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
+export const currency = "RS ";
+
 function App() {
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : ""
