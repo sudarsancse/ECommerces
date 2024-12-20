@@ -5,11 +5,18 @@ import List from "./Components/Pages/List";
 import Orders from "./Components/Pages/Orders";
 import Login from "./Components/Pages/Login";
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 function App() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : ""
+  );
+
+  useEffect(() => {
+    localStorage.setItem("token", token);
+  }, [token]);
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <ToastContainer />
@@ -17,15 +24,15 @@ function App() {
         <Login setToken={setToken} />
       ) : (
         <>
-          <Navbar />
+          <Navbar setToken={setToken} />
           <hr />
           <div className=" flex w-full">
             <Sidebar />
             <div className=" w-[70%] ml-[max(5vw,25px)] my-8 mx-auto text-gray-400 text-base">
               <Routes>
-                <Route path="/add" element={<Add />} />
-                <Route path="/list" element={<List />} />
-                <Route path="/orders" element={<Orders />} />
+                <Route path="/add" element={<Add token={token} />} />
+                <Route path="/list" element={<List token={token} />} />
+                <Route path="/orders" element={<Orders token={token} />} />
               </Routes>
             </div>
           </div>
