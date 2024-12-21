@@ -51,7 +51,7 @@ function Add({ token }) {
       }
     } catch (error) {
       console.log(error);
-      toString.error(error.message);
+      toast.error(error.message);
     }
   };
 

@@ -11,13 +11,41 @@ import { ToastContainer } from "react-toastify";
 export const currency = "RS ";
 
 function App() {
-  const [token, setToken] = useState(
-    localStorage.getItem("token") ? localStorage.getItem("token") : ""
-  );
+  const [token, setToken] = useState(() => {
+    const savedToken = localStorage.getItem("token");
+    const lastVisit = localStorage.getItem("lastVisit");
+
+    // Check if 30 seconds have passed since the last visit
+    if (savedToken && lastVisit) {
+      const timeElapsed = Date.now() - parseInt(lastVisit, 10);
+      if (timeElapsed > 30000) {
+        localStorage.removeItem("token");
+        return "";
+      }
+    }
+    return savedToken || "";
+  });
 
   useEffect(() => {
-    localStorage.setItem("token", token);
+    // Save token to localStorage whenever it changes
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
   }, [token]);
+
+  useEffect(() => {
+    // Save the timestamp when the user closes the website
+    const handleBeforeUnload = () => {
+      localStorage.setItem("lastVisit", Date.now().toString());
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className="bg-gray-50 min-h-screen">
