@@ -68,9 +68,9 @@ export const RegisterUser = async (req, res) => {
 export const LoginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({
-      $or: [{ email: email }, { number: email }],
-    });
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const query = isEmail ? { email: email } : { number: Number(email) };
+    const user = await User.findOne(query);
 
     if (!user) {
       return res
