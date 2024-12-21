@@ -16,6 +16,7 @@ function Add({ token }) {
   const [subCategory, setSubSategory] = useState("Topwear");
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const validateImage = (file) => {
     const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -28,8 +29,14 @@ function Add({ token }) {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
+      if (!image1 && !image2 && !image3 && !image4) {
+        toast.error("At least one image must be uploaded.");
+        return;
+      }
+
       const fromData = new FormData();
       fromData.append("name", name);
       fromData.append("description", description);
@@ -55,12 +62,15 @@ function Add({ token }) {
         setImage3(false);
         setImage4(false);
         setPrice("");
+        setSizes([]);
       } else {
-        toString.error(res.data.message);
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -308,9 +318,14 @@ function Add({ token }) {
 
       <button
         type="submit"
-        className=" w-44 py-3 bg-black mt-4 text-white hover:text-black hover:bg-green-600 rounded-full"
+        disabled={loading}
+        className={`w-44 py-3 ${
+          loading ? "bg-gray-400 cursor-not-allowed" : "bg-black"
+        } mt-4 text-white ${
+          loading ? "" : "hover:text-black hover:bg-green-600"
+        } rounded-full`}
       >
-        Create Producte
+        {loading ? "Loading..." : "Create Product"}
       </button>
     </form>
   );
