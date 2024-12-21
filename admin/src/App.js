@@ -7,6 +7,7 @@ import Login from "./Components/Pages/Login";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import UpdateProduct from "./Components/Pages/UpdateProduct";
 
 export const currency = "RS ";
 
@@ -63,6 +64,7 @@ function App() {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
+                <Route path="/updateProduct/:id" element={<UpdateProduct />} />
               </Routes>
             </div>
           </div>

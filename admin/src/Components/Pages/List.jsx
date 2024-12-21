@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { currency } from "../../App";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 function List({ token }) {
   const [list, setList] = useState([]);
+  const navigate = useNavigate();
 
   const fetchList = async () => {
     try {
@@ -42,6 +46,18 @@ function List({ token }) {
     }
   };
 
+  /* update product */
+
+  const updateProduct = async (id) => {
+    try {
+      navigate(`/updateProduct/${id}`);
+      toast.info(`Redirecting to update product ID: ${id}`);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchList();
   }, []);
@@ -71,12 +87,18 @@ function List({ token }) {
               {currency}
               {item.price}
             </p>
-            <p
-              onClick={() => removProduct(item._id)}
-              className=" text-right hover:text-black md:text-center cursor-pointer text-lg"
-            >
-              X
-            </p>
+            <div className="flex items-center justify-center space-x-2">
+              <FontAwesomeIcon
+                onClick={() => updateProduct(item._id)}
+                className="hover:text-black cursor-pointer text-lg"
+                icon={faPenToSquare}
+              />
+              <FontAwesomeIcon
+                icon={faTrashCan}
+                onClick={() => removProduct(item._id)}
+                className="hover:text-black cursor-pointer text-lg"
+              />
+            </div>
           </div>
         ))}
       </div>
