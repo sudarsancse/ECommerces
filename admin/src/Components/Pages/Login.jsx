@@ -47,14 +47,6 @@ function Login({ setToken }) {
           </div>
           <div className=" mb-3 min-w-72">
             <p className=" text-sm font-medium text-gray-700 mb-2">Password</p>
-            {/* <input
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              className=" rounded-md w-full px-3 py-2 border border-gray-300 outline-none"
-              type="Password"
-              placeholder=" Enter Your Password"
-              required
-            /> */}
             <div className="relative">
               <input
                 onChange={(e) => setPassword(e.target.value)}

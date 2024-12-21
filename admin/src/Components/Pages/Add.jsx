@@ -17,6 +17,15 @@ function Add({ token }) {
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
 
+  const validateImage = (file) => {
+    const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (file && !validImageTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPEG, PNG, and WEBP are allowed.");
+      return false;
+    }
+    return true;
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -71,7 +80,11 @@ function Add({ token }) {
               alt="uplod"
             />
             <input
-              onChange={(e) => setImage1(e.target.files[0])}
+              onChange={(e) => {
+                if (validateImage(e.target.files[0])) {
+                  setImage1(e.target.files[0]);
+                }
+              }}
               type="file"
               id="image1"
               hidden
@@ -84,7 +97,11 @@ function Add({ token }) {
               alt="uplod"
             />
             <input
-              onChange={(e) => setImage2(e.target.files[0])}
+              onChange={(e) => {
+                if (validateImage(e.target.files[0])) {
+                  setImage2(e.target.files[0]);
+                }
+              }}
               type="file"
               id="image2"
               hidden
@@ -97,7 +114,11 @@ function Add({ token }) {
               alt="uplod"
             />
             <input
-              onChange={(e) => setImage3(e.target.files[0])}
+              onChange={(e) => {
+                if (validateImage(e.target.files[0])) {
+                  setImage3(e.target.files[0]);
+                }
+              }}
               type="file"
               id="image3"
               hidden
@@ -110,7 +131,11 @@ function Add({ token }) {
               alt="uplod"
             />
             <input
-              onChange={(e) => setImage4(e.target.files[0])}
+              onChange={(e) => {
+                if (validateImage(e.target.files[0])) {
+                  setImage4(e.target.files[0]);
+                }
+              }}
               type="file"
               id="image4"
               hidden
@@ -252,9 +277,9 @@ function Add({ token }) {
           <div
             onClick={(e) =>
               setSizes((prev) =>
-                prev.includes("XLL")
-                  ? prev.filter((item) => item !== "XLL")
-                  : [...prev, "XLL"]
+                prev.includes("XXL")
+                  ? prev.filter((item) => item !== "XXL")
+                  : [...prev, "XXL"]
               )
             }
           >
