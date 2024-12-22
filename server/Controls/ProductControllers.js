@@ -1,5 +1,6 @@
 import productModel from "../Models/productModel.js";
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 
 // function for add products
 export const addProduct = async (req, res) => {
@@ -83,6 +84,7 @@ export const removingProduct = async (req, res) => {
 export const singleProduct = async (req, res) => {
   try {
     const product = req.body.id;
+
     const data = await productModel.findById(product);
     res.json({ success: true, message: "product found Successfully", data });
   } catch (error) {
@@ -93,67 +95,46 @@ export const singleProduct = async (req, res) => {
 
 // ? function for updating product
 export const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    description,
+    category,
+    subCategory,
+    price,
+    sizes,
+    bestseller,
+    images,
+  } = req.body;
+
+  //console.log(req.body);
   try {
-    const {
-      id,
-      name,
-      description,
-      price,
-      category,
-      subCategory,
-      sizes,
-      bestseller,
-    } = req.body;
-
-    const existingProduct = await productModel.findById(id);
-
-    if (!existingProduct) {
-      return res.json({ success: false, message: "Product not found" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID" });
     }
-
-    // Handling new images
-    const image1 = req.files.image1 && req.files.image1[0];
-    const image2 = req.files.image2 && req.files.image2[0];
-    const image3 = req.files.image3 && req.files.image3[0];
-    const image4 = req.files.image4 && req.files.image4[0];
-
-    const images = [image1, image2, image3, image4].filter(
-      (item) => item != undefined
-    );
-
-    let imageURL = existingProduct.image;
-
-    if (images.length > 0) {
-      imageURL = await Promise.all(
-        images.map(async (item) => {
-          let result = await cloudinary.uploader.upload(item.path, {
-            resource_type: "image",
-            folder: "Trending E-Com",
-          });
-
-          return result.secure_url;
-        })
-      );
-    }
-
-    const updatedProductData = {
-      name,
-      description,
-      price: Number(price),
-      category,
-      subCategory,
-      sizes: JSON.parse(sizes),
-      bestseller: bestseller === "true" ? true : false,
-      image: imageURL,
-    };
 
     const updatedProduct = await productModel.findByIdAndUpdate(
       id,
-      updatedProductData,
       {
-        new: true,
-      }
+        name,
+        description,
+        category,
+        subCategory,
+        price,
+        sizes,
+        bestseller,
+        images,
+      },
+      { new: true }
     );
+
+    if (!updatedProduct) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
 
     res.json({
       success: true,

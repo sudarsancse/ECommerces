@@ -51,7 +51,7 @@ function List({ token }) {
   const updateProduct = async (id) => {
     try {
       navigate(`/updateProduct/${id}`);
-      toast.info(`Redirecting to update product ID: ${id}`);
+      toast.info(`Redirecting to update the product`);
     } catch (error) {
       console.log(error);
       toast.error(error.message);

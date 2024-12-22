@@ -1,89 +1,72 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { assets } from "../assets/assets";
 
-function UpdateProduct() {
-  const [product, setProduct] = useState({
+function UpdateProduct({ token }) {
+  const { id } = useParams();
+  const [productData, setProductData] = useState({
     name: "",
     description: "",
+    category: "",
+    subCategory: "",
     price: "",
-    category: "Men",
-    subCategory: "Topwear",
-    bestseller: false,
     sizes: [],
-    images: [null, null, null, null],
+    bestseller: false,
+    image: [],
   });
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const productId = window.location.pathname.split("/")[2]; // Assuming URL is /updateProduct/:id
-        const res = await axios.get(`/getProduct/${productId}`);
-        if (res.data.success) {
-          setProduct(res.data.product);
-        } else {
-          toast.error(res.data.message);
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message);
-      }
-    };
+  const [isLoading, setIsLoading] = useState(false);
 
-    fetchProduct();
-  }, []);
+  const fetchProductData = async () => {
+    try {
+      const response = await axios.post("/singleProduct", { id });
+
+      const product = response.data.data;
+
+      // Populate the state with fetched product data
+      setProductData({
+        name: product.name || "",
+        description: product.description || "",
+        category: product.category || "",
+        subCategory: product.subCategory || "",
+        price: product.price || "",
+        sizes: product.sizes || [],
+
+        bestseller: product.bestseller || false,
+        image: product.image || [],
+      });
+    } catch (error) {
+      toast.error("Failed to fetch product data.");
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductData();
+  }, [id]);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setProduct({
-      ...product,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    const { name, value } = e.target;
+    setProductData({ ...productData, [name]: value });
   };
 
-  const handleSizesChange = (size) => {
-    setProduct((prev) =>
-      prev.sizes.includes(size)
-        ? prev.sizes.filter((item) => item !== size)
-        : [...prev.sizes, size]
-    );
+  const handleCheckboxChange = (e) => {
+    setProductData({ ...productData, bestseller: e.target.checked });
   };
 
-  const handleImageChange = (index, file) => {
-    setProduct((prev) => {
-      const newImages = [...prev.images];
-      newImages[index] = file;
-      return { ...prev, images: newImages };
-    });
+  const handleImageChange = (index, e) => {
+    const newimage = [...productData.image];
+    newimage[index] = URL.createObjectURL(e.target.files[0]);
+    setProductData({ ...productData, image: newimage });
   };
 
-  const validateImage = (file) => {
-    const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (file && !validImageTypes.includes(file.type)) {
-      toast.error("Invalid file type. Only JPEG, PNG, and WEBP are allowed.");
-      return false;
-    }
-    return true;
-  };
-
-  const onSubmitHandler = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
-      const formData = new FormData();
-      formData.append("name", product.name);
-      formData.append("description", product.description);
-      formData.append("price", product.price);
-      formData.append("category", product.category);
-      formData.append("subCategory", product.subCategory);
-      formData.append("bestseller", product.bestseller);
-      formData.append("sizes", JSON.stringify(product.sizes));
-
-      product.images.forEach((image, index) => {
-        if (image) formData.append(`image${index + 1}`, image);
-      });
-
-      const res = await axios.put(`/updateProduct/${product._id}`, formData);
+      const res = await axios.post(`/updateProduct/${id}`, productData);
       if (res.data.message) {
         toast.success(res.data.message);
       } else {
@@ -92,71 +75,64 @@ function UpdateProduct() {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={onSubmitHandler}
-      className="flex flex-col w-full items-start gap-3"
-    >
-      {/* Image Uploads */}
+    <form onSubmit={handleSubmit}>
       <div>
-        <p className="mb-2">Upload Images</p>
+        <p className=" mb-2">Upload Image</p>
+
         <div className="flex gap-2">
-          {product.images.map((image, index) => (
-            <label key={index} htmlFor={`image${index + 1}`}>
-              <img
-                className="w-20"
-                src={image ? URL.createObjectURL(image) : ""}
-                alt={`upload-${index + 1}`}
-              />
-              <input
-                type="file"
-                id={`image${index + 1}`}
-                hidden
-                onChange={(e) => {
-                  if (validateImage(e.target.files[0])) {
-                    handleImageChange(index, e.target.files[0]);
-                  }
-                }}
-              />
-            </label>
-          ))}
+          {Array(4)
+            .fill()
+            .map((_, index) => (
+              <label key={index} htmlFor={`image${index + 1}`}>
+                <img
+                  className="w-20"
+                  src={productData.image[index] || assets.upload_area}
+                  alt={`Upload ${index + 1}`}
+                />
+                <input
+                  type="file"
+                  id={`image${index + 1}`}
+                  hidden
+                  onChange={(e) => handleImageChange(index, e)}
+                />
+              </label>
+            ))}
         </div>
       </div>
-
-      {/* Other Form Fields */}
       <div className="w-full">
         <p className="mb-2">Product name</p>
         <input
-          name="name"
-          onChange={handleInputChange}
-          value={product.name}
           type="text"
-          placeholder="enter Product name"
+          name="name"
+          value={productData.name}
+          onChange={handleInputChange}
+          placeholder="Enter product name"
           className="w-full max-w-[500px] px-3 py-2"
         />
       </div>
-
       <div className="w-full">
         <p className="mb-2">Product description</p>
         <textarea
           name="description"
+          value={productData.description}
           onChange={handleInputChange}
-          value={product.description}
-          placeholder="write Product description"
+          placeholder="Write product description"
           className="w-full max-w-[500px] px-3 py-2"
         />
       </div>
-
       <div className="flex flex-col sm:flex-row gap-2 w-full sm:gap-8">
         <div>
           <p className="mb-2">Product category</p>
           <select
             name="category"
+            value={productData.category}
             onChange={handleInputChange}
-            value={product.category}
             className="w-full px-3 py-2"
           >
             <option value="Men">Men</option>
@@ -164,13 +140,12 @@ function UpdateProduct() {
             <option value="Kids">Kids</option>
           </select>
         </div>
-
         <div>
           <p className="mb-2">Sub category</p>
           <select
             name="subCategory"
+            value={productData.subCategory}
             onChange={handleInputChange}
-            value={product.subCategory}
             className="w-full px-3 py-2"
           >
             <option value="Topwear">Topwear</option>
@@ -178,31 +153,37 @@ function UpdateProduct() {
             <option value="Winterwear">Winterwear</option>
           </select>
         </div>
-
         <div>
-          <p className="mb-2">Product Price</p>
+          <p className="mb-2">Product price</p>
           <input
-            name="price"
-            onChange={handleInputChange}
-            value={product.price}
-            className="w-full px-3 py-2 sm:w-[120px]"
             type="number"
+            name="price"
+            value={productData.price}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 sm:w-[120px]"
             placeholder="0"
           />
         </div>
       </div>
-
-      <div className="">
-        <p className="mb-2">Product Sizes</p>
+      <div>
+        <p className="mb-2">Product sizes</p>
         <div className="flex gap-3">
           {["S", "M", "X", "XL", "XXL"].map((size) => (
-            <div key={size} onClick={() => handleSizesChange(size)}>
+            <div key={size}>
               <p
-                className={`${
-                  product.sizes.includes(size)
+                className={`px-3 py-1 cursor-pointer border ${
+                  productData.sizes.includes(size)
                     ? "bg-black text-white"
-                    : "bg-gray-100"
-                } px-3 py-1 cursor-pointer border`}
+                    : "bg-white text-black"
+                }`}
+                onClick={() =>
+                  setProductData((prevData) => ({
+                    ...prevData,
+                    sizes: prevData.sizes.includes(size)
+                      ? prevData.sizes.filter((s) => s !== size)
+                      : [...prevData.sizes, size],
+                  }))
+                }
               >
                 {size}
               </p>
@@ -210,19 +191,27 @@ function UpdateProduct() {
           ))}
         </div>
       </div>
-
       <div className="flex gap-2 mt-2">
-        <input name="bestseller" type="checkbox" id="bestseller" />
+        <input
+          type="checkbox"
+          id="bestseller"
+          checked={productData.bestseller}
+          onChange={handleCheckboxChange}
+        />
         <label className="cursor-pointer" htmlFor="bestseller">
           Add to bestseller
         </label>
       </div>
-
       <button
         type="submit"
-        className="w-44 py-3 bg-black hover:text-black hover:bg-green-600 text-white rounded-full"
+        disabled={isLoading}
+        className={`w-44 py-3 ${
+          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-black"
+        } mt-4 text-white ${
+          isLoading ? "" : "hover:text-black hover:bg-green-600"
+        } rounded-full`}
       >
-        Update Product
+        {isLoading ? "Loading..." : "Update Product"}
       </button>
     </form>
   );
