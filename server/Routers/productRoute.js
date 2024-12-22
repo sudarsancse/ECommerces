@@ -32,6 +32,6 @@ productRoutes.post("/singleProduct", singleProduct);
 // * LIST PRODUCT
 productRoutes.get("/listProduct", listProduct);
 
-productRoutes.post("/updateProduct/:id", updateProduct);
+productRoutes.post("/updateProduct/:id", adminAuth, updateProduct);
 
 export default productRoutes;

@@ -66,7 +66,9 @@ function UpdateProduct({ token }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post(`/updateProduct/${id}`, productData);
+      const res = await axios.post(`/updateProduct/${id}`, productData, {
+        headers: { token },
+      });
       if (res.data.message) {
         toast.success(res.data.message);
       } else {

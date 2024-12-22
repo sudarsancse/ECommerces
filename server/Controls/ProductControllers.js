@@ -1,6 +1,5 @@
 import productModel from "../Models/productModel.js";
 import { v2 as cloudinary } from "cloudinary";
-import mongoose from "mongoose";
 
 // function for add products
 export const addProduct = async (req, res) => {
@@ -109,12 +108,6 @@ export const updateProduct = async (req, res) => {
 
   //console.log(req.body);
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid product ID" });
-    }
-
     const updatedProduct = await productModel.findByIdAndUpdate(
       id,
       {
