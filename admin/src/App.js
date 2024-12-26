@@ -4,6 +4,7 @@ import Add from "./Components/Pages/Add";
 import List from "./Components/Pages/List";
 import Orders from "./Components/Pages/Orders";
 import Login from "./Components/Pages/Login";
+import Users from "./Components/Pages/Users";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -64,6 +65,7 @@ function App() {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
+                <Route path="/users" element={<Users token={token} />} />
                 <Route
                   path="/updateProduct/:id"
                   element={<UpdateProduct token={token} />}
