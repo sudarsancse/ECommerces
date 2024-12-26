@@ -8,6 +8,7 @@ function Login() {
   const [formData, setFromData] = useState({});
   const [currentState, setCurrentState] = useState("Login");
   const [showPassword, setShowPassword] = useState(false);
+
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { navigate, token, setToken } = useContext(ShopContext);
 
@@ -206,11 +207,16 @@ function Login() {
       )}
 
       <div className=" w-full flex justify-between text-sm mt-[-8px]">
-        <p className=" cursor-pointer">Forget your password</p>
+        <p
+          className=" cursor-pointer hover:text-blue-800"
+          onClick={() => navigate("/forgetPassword")}
+        >
+          Forget your password
+        </p>
         {currentState === "Login" ? (
           <p
             onClick={() => setCurrentState("Sign up")}
-            className="cursor-pointer"
+            className="cursor-pointer hover:text-blue-800"
           >
             Create Account
           </p>

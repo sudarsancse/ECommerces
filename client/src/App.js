@@ -11,6 +11,9 @@ import Collection from "./Components/pages/Collection";
 import Navbar from "./Components/component/Navbar";
 import Footer from "./Components/component/Footer";
 import SearchBar from "./Components/component/SearchBar";
+import ForgetPassword from "./Components/pages/ForgetPassword";
+import ResetPassword from "./Components/pages/ResetPassword";
+import Error from "./Components/pages/Error";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -41,6 +44,9 @@ function App() {
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/collection" element={<Collection />} />
+        <Route path="/forgetPassword" element={<ForgetPassword />} />
+        <Route path="/resetPassword/:id" element={<ResetPassword />} />
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
     </div>
