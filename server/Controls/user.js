@@ -151,8 +151,9 @@ export const VerifyOTP = async (req, res) => {
 // ?----Route for new password-----//
 export const UpdatedPassword = async (req, res) => {
   try {
-    const { Npasword, CPassword } = req.body;
-    if (Npasword === CPassword) {
+    const { newPassword, confirmPassword } = req.body;
+
+    if (newPassword === confirmPassword) {
       const id = req.params.id;
       const user = await User.findById({ _id: id });
       if (!user) {
@@ -163,13 +164,13 @@ export const UpdatedPassword = async (req, res) => {
 
       const salt = await bcrypt.genSalt(12);
 
-      const hasPassword = await bcrypt.hash(password, salt);
+      const hasPassword = await bcrypt.hash(confirmPassword, salt);
       user.password = hasPassword;
       await user.save();
 
       res.json({
         success: true,
-        message: "Password updated successfully",
+        message: "Password Updated successfully.",
       });
     } else {
       return res.json({
