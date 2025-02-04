@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 import routes from "./Routers/routes.js";
 import productRoutes from "./Routers/productRoute.js";
+import CartRoutes from "./Routers/CartRouts.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const MONGO = process.env.MONGO_URL;
@@ -16,10 +17,10 @@ const app = express();
 mongoose
   .connect(MONGO)
   .then(() => {
-    console.log("database connected");
+    console.log("Database Successfully connected");
   })
   .catch((error) => {
-    console.error(`Connection failed ${error}`);
+    console.error(`MongoDb Connection failed : ${error}`);
   });
 
 // *-----CLOUDINARY CONNECTION-----//
@@ -35,6 +36,7 @@ app.use(cors());
 //! -------------- ALL ROUTES--------------
 app.use("/", routes);
 app.use("/", productRoutes);
+app.use("/", CartRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port Number : ${PORT}`);
