@@ -12,7 +12,8 @@ export const authUser = async (req, res, next) => {
 
   try {
     const token_decode = jwt.verify(token, process.env.JSONWEBTOKEN);
-    req.body.userId = token_decode.userId;
+
+    req.body.userId = token_decode.id;
     next();
   } catch (error) {
     console.log(error);
