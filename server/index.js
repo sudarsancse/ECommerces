@@ -6,6 +6,7 @@ dotenv.config({ path: "./.env" });
 import routes from "./Routers/routes.js";
 import productRoutes from "./Routers/productRoute.js";
 import CartRoutes from "./Routers/CartRouts.js";
+import PaymentRoutes from "./Routers/PaymentRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const MONGO = process.env.MONGO_URL;
@@ -37,6 +38,7 @@ app.use(cors());
 app.use("/", routes);
 app.use("/", productRoutes);
 app.use("/", CartRoutes);
+app.use("/payment", PaymentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port Number : ${PORT}`);
