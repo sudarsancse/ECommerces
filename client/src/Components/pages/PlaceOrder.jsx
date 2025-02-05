@@ -71,6 +71,7 @@ function PlaceOrder() {
           console.log(res.data);
 
           if (res.data.success) {
+            toast.success(res.data.message);
             setCartItems({});
             navigate("/order");
           } else {
@@ -80,7 +81,10 @@ function PlaceOrder() {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -150,7 +154,7 @@ function PlaceOrder() {
             name="zipcode"
             value={fromData.zipcode}
             className=" border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="Number"
+            type="number"
             placeholder="Zpicode"
           />
           <input

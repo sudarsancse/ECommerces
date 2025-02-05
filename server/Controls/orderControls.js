@@ -5,12 +5,89 @@ import User from "../Models/userData.js";
 export const plaseOrderCod = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      street,
+      city,
+      state,
+      zipcode,
+      country,
+      phone,
+    } = address;
+
+    if (!firstName) {
+      return res.json({
+        success: false,
+        message: "First Name is required",
+      });
+    }
+    if (!lastName) {
+      return res.json({
+        success: false,
+        message: "Last Name is required",
+      });
+    }
+    if (!email || !email.includes("@")) {
+      return res.json({
+        success: false,
+        message: "Valid email address is required",
+      });
+    }
+    if (!street) {
+      return res.json({
+        success: false,
+        message: "Street is required",
+      });
+    }
+    if (!city) {
+      return res.json({
+        success: false,
+        message: "City is required",
+      });
+    }
+    if (!state) {
+      return res.json({
+        success: false,
+        message: "State is required",
+      });
+    }
+    if (!zipcode || !/^\d{6,}$/.test(zipcode)) {
+      return res.json({
+        success: false,
+        message: "Zipcode should be a number with at least 6 digits",
+      });
+    }
+    if (!country) {
+      return res.json({
+        success: false,
+        message: "country is required",
+      });
+    }
+
+    if (!phone || !/^\d{10,}$/.test(phone)) {
+      return res.json({
+        success: false,
+        message: "Phone number should be exactly 10 digits",
+      });
+    }
 
     const orderData = {
       userId,
       items,
       amount,
-      address,
+      address: {
+        firstName,
+        lastName,
+        email,
+        street,
+        city,
+        state,
+        zipcode,
+        country,
+        phone,
+      },
       paymentMethod: "COD",
       payment: false,
       date: Date.now(),
