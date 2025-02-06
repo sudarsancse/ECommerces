@@ -175,6 +175,12 @@ export const userOrders = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
   try {
+    const { orderId, status } = req.body;
+    await OrderModel.findByIdAndUpdate(orderId, { status });
+    res.json({
+      success: true,
+      message: "Status successfully updated",
+    });
   } catch (error) {
     console.log(error);
     res.json({
