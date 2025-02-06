@@ -16,6 +16,7 @@ import ResetPassword from "./Components/pages/ResetPassword";
 import Error from "./Components/pages/Error";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Verify from "./Components/pages/Verify";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         <Route path="/collection" element={<Collection />} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/resetPassword/:id" element={<ResetPassword />} />
+        <Route path="/verify" element={<Verify />} />
         <Route path="*" element={<Error />} />
       </Routes>
       <Footer />

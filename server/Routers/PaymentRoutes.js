@@ -6,6 +6,7 @@ import {
   allOrders,
   userOrders,
   updateStatus,
+  verifyRazorpay,
 } from "../Controls/orderControls.js";
 import adminAuth from "../Middlewares/adminAuth.js";
 
@@ -23,5 +24,8 @@ PaymentRoutes.post("/status", adminAuth, updateStatus);
 
 //Todo Client Features
 PaymentRoutes.post("/userOrders", authUser, userOrders);
+
+//*  verify payment
+PaymentRoutes.post("/verifyRazoppay", authUser, verifyRazorpay);
 
 export default PaymentRoutes;

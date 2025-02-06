@@ -37,6 +37,36 @@ function PlaceOrder() {
     setFromData((data) => ({ ...data, [name]: value }));
   };
 
+  const initPay = (order) => {
+    const Option = {
+      key: process.env.REACT_APP_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Order Payment",
+      description: "Order Payment",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        console.log(response);
+        try {
+          const { data } = await axios.post(
+            "/payment/verifyRazoppay",
+            response,
+            { headers: { token } }
+          );
+          if (data.success) {
+            navigate("/order");
+            setCartItems({});
+          }
+        } catch (error) {
+          toast.error(error);
+        }
+      },
+    };
+    const rzp = new window.Razorpay(Option);
+    rzp.open();
+  };
+
   const OnSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -68,8 +98,6 @@ function PlaceOrder() {
             headers: { token },
           });
 
-          console.log(res.data);
-
           if (res.data.success) {
             toast.success(res.data.message);
             setCartItems({});
@@ -78,6 +106,28 @@ function PlaceOrder() {
             toast.error(res.data.message);
           }
           break;
+
+        case "stripe":
+          const resStripe = await axios.post("/payment/stripe", OrderData, {
+            headers: { token },
+          });
+          if (resStripe.data.success) {
+            const { session_url } = resStripe.data;
+            window.location.replace(session_url);
+          } else {
+            toast.error(resStripe.data.message);
+          }
+          break;
+
+        case "razorpay":
+          const resRezorpay = await axios.post("/payment/razorpay", OrderData, {
+            headers: { token },
+          });
+          if (resRezorpay.data.success) {
+            initPay(resRezorpay.data.order);
+          }
+          break;
+
         default:
           break;
       }
