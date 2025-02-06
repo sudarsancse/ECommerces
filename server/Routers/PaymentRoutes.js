@@ -7,6 +7,7 @@ import {
   userOrders,
   updateStatus,
   verifyRazorpay,
+  verifyStripr,
 } from "../Controls/orderControls.js";
 import adminAuth from "../Middlewares/adminAuth.js";
 
@@ -27,5 +28,6 @@ PaymentRoutes.post("/userOrders", authUser, userOrders);
 
 //*  verify payment
 PaymentRoutes.post("/verifyRazoppay", authUser, verifyRazorpay);
+PaymentRoutes.post("/verifyStripe", authUser, verifyStripr);
 
 export default PaymentRoutes;

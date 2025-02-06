@@ -127,7 +127,7 @@ export const plaseOrderCod = async (req, res) => {
 export const plaseOrderStripe = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
-    const { origin } = req.headers;
+
     const orderData = {
       userId,
       items,
@@ -162,8 +162,8 @@ export const plaseOrderStripe = async (req, res) => {
     });
 
     const session = await stripe.checkout.sessions.create({
-      success_url: `${origin}/verify?seccess=true&orderId=${newOrder._id}`,
-      cancel_url: `${origin}/verify?seccess=false&orderId=${newOrder._id}`,
+      success_url: `${process.env.FRONTEND_URL}/verify?success=true&orderId=${newOrder._id}`,
+      cancel_url: `${process.env.FRONTEND_URL}/verify?success=false&orderId=${newOrder._id}`,
       line_items,
       mode: "payment",
     });
@@ -172,6 +172,31 @@ export const plaseOrderStripe = async (req, res) => {
       success: true,
       session_url: session.url,
     });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+//! -------------------verify Razorpay method--------------------
+export const verifyStripr = async (req, res) => {
+  const { orderId, success, userId } = req.body;
+  try {
+    if (success === "true") {
+      await OrderModel.findByIdAndUpdate(orderId, { payment: true });
+      await User.findByIdAndUpdate(userId, { cartData: {} });
+      res.json({
+        success: true,
+      });
+    } else {
+      await OrderModel.findByIdAndDelete(orderId);
+      res.json({
+        success: false,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.json({
