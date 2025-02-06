@@ -30,20 +30,44 @@ function Orders({ token }) {
     }
   };
 
+  const statusHandler = async (e, orderId) => {
+    try {
+      const res = await axios.post(
+        "/payment/status",
+        { orderId, status: e.target.value },
+        { headers: { token } }
+      );
+      console.log(res.data.message);
+
+      if (res.data.success) {
+        await fetchAllOrderd();
+        toast.success(`Order status updated to ${res.data.status}`);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchAllOrderd();
   }, [token]);
 
   return (
     <div>
-      <h3>Order Page</h3>
+      <h3>Orders Page</h3>
       <div>
         {orders.map((order, index) => (
           <div
             key={index}
-            className=" grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
+            className=" grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-4 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700"
           >
-            <img className=" w-12" src={assets.parcel_icon} alt="" />
+            <div className=" h-full flex items-center justify-center">
+              <img
+                className=" w-full"
+                src={order.items[0]?.image || assets.parcel_icon}
+                alt=""
+              />
+            </div>
             <div>
               <div>
                 {order.items.map((item, index) => {
@@ -67,17 +91,15 @@ function Orders({ token }) {
                 {order.address.firstName + " " + order.address.lastName}
               </p>
               <div>
+                <p>{order.address.street + ", "}</p>
                 <p>
-                  {order.address.street + ", "}
-                  <p>
-                    {order.address.city +
-                      ", " +
-                      order.address.state +
-                      ", " +
-                      order.address.country +
-                      ", " +
-                      order.address.zipcode}
-                  </p>
+                  {order.address.city +
+                    ", " +
+                    order.address.state +
+                    ", " +
+                    order.address.country +
+                    ", " +
+                    order.address.zipcode}
                 </p>
               </div>
               <p>{order.address.phone}</p>
@@ -96,7 +118,11 @@ function Orders({ token }) {
               {currency}
               {order.amount}
             </p>
-            <select value={order.status} className=" p-2 font-semibold">
+            <select
+              onChange={(e) => statusHandler(e, order._id)}
+              value={order.status}
+              className=" p-2 font-semibold"
+            >
               <option value="Order Plased">Order Plased</option>
               <option value="Paking">Paking</option>
               <option value="Shipped">Shipped</option>
