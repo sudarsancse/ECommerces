@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import UpdateProduct from "./Components/Pages/UpdateProduct";
 
-export const currency = "RS ";
+export const currency = "$ ";
 
 function App() {
   const [token, setToken] = useState(() => {

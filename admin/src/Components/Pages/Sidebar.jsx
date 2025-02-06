@@ -26,7 +26,7 @@ function Sidebar() {
 
         <NavLink
           className="flex items-center gap-3 border border-gray-300 border-r-0 px-2 py-2 rounded-1"
-          to="/Order"
+          to="/orders"
         >
           <img className=" w-5 h-5" src={assets.order_icon} alt="add-icon" />
           <p className=" hidden md:block">Orders</p>

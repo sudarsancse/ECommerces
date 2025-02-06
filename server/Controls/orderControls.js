@@ -137,6 +137,11 @@ export const plaseOrderRazorpay = async (req, res) => {
 
 export const allOrders = async (req, res) => {
   try {
+    const orders = await OrderModel.find({});
+    res.json({
+      success: true,
+      orders,
+    });
   } catch (error) {
     console.log(error);
     res.json({

@@ -34,16 +34,19 @@ function Users() {
           <b>Number</b>
           <b className=" text-center">Action</b>
         </div>
-        {allUsers.map((item, index) => (
-          <div
-            className=" grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_2fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm"
-            key={index}
-          >
-            <p className="">{item.name}</p>
-            <p className="">{item.email}</p>
-            <p className="">{item.number}</p>
-          </div>
-        ))}
+        {allUsers.map((item, index) => {
+          const { name, email, number } = item;
+          return (
+            <div
+              className=" grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_2fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm"
+              key={index}
+            >
+              <p className="">{name}</p>
+              <p className="">{email}</p>
+              <p className="">{number}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
