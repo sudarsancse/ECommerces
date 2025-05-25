@@ -199,9 +199,16 @@ export const AdminLogin = async (req, res) => {
 
     const isPasswordValid = await bcrypt.compare(password, existUser.password);
     if (email === existUser.email && isPasswordValid) {
-      const token = createToken(existUser._id);
+      /* const token = createToken(existUser._id); */
+      const token = jwt.sign(
+        { id: existUser._id, role: existUser.role },
+        process.env.JSONWEBTOKEN,
+        { expiresIn: "1h" }
+      );
 
-      res.json({ success: true, token });
+      const role = existUser.role;
+
+      res.json({ success: true, token, role });
     } else {
       res.json({ success: false, message: "Invalid credential" });
     }
@@ -215,7 +222,7 @@ export const AdminLogin = async (req, res) => {
 
 export const AdminSignup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const existUser = await adminModel.findOne({ email });
 
@@ -234,6 +241,7 @@ export const AdminSignup = async (req, res) => {
       name,
       email,
       password: hasPassword,
+      role,
     });
 
     const user = await newUser.save();
@@ -258,5 +266,73 @@ export const ListUsers = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
+  }
+};
+
+// ! role based users ///
+export const RoleUser = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    const tokenDecode = jwt.verify(token, process.env.JSONWEBTOKEN);
+
+    const id = await adminModel.findById(tokenDecode.id);
+    const loginUserDetails = {
+      name: id.name,
+      email: id.email,
+      role: id.role,
+    };
+
+    const Users = await adminModel.find({});
+
+    res.json({ success: true, message: "All Users", Users, loginUserDetails });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// * role based users ///
+export const UpdateRole = async (req, res) => {
+  try {
+    const { userId, newRole } = req.body;
+
+    if (!userId || !newRole) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID and new role are required",
+      });
+    }
+
+    // Optionally validate role values
+    const validRoles = ["admin", "manager", "user"];
+    if (!validRoles.includes(newRole)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid role value",
+      });
+    }
+
+    const user = await adminModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.role = newRole;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User role updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating role:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating role",
+    });
   }
 };

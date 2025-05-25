@@ -2,7 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
+import {
+  faUserPlus,
+  faUsers,
+  faPeopleGroup,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Sidebar() {
   return (
@@ -33,9 +37,23 @@ function Sidebar() {
         </NavLink>
         <NavLink
           className="flex items-center gap-3 border border-gray-300 border-r-0 px-2 py-2 rounded-1"
+          to="/create_user"
+        >
+          <FontAwesomeIcon className=" w-5 h-5" icon={faUserPlus} />
+          <p className=" hidden md:block">Create user</p>
+        </NavLink>
+        <NavLink
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-2 py-2 rounded-1"
+          to="/teams"
+        >
+          <FontAwesomeIcon className=" w-5 h-5" icon={faPeopleGroup} />
+          <p className=" hidden md:block">Teams</p>
+        </NavLink>
+        <NavLink
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-2 py-2 rounded-1"
           to="/Users"
         >
-          <FontAwesomeIcon className=" w-5 h-5" icon={faUser} />
+          <FontAwesomeIcon className=" w-5 h-5" icon={faUsers} />
           <p className=" hidden md:block">Users</p>
         </NavLink>
       </div>

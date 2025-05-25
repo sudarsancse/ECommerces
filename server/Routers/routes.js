@@ -8,8 +8,13 @@ import {
   sendOTP,
   VerifyOTP,
   UpdatedPassword,
+  RoleUser,
+  UpdateRole,
 } from "../Controls/user.js";
 
+import verifyToken from "../Middlewares/authMiddleware.js";
+
+import authorizeRole from "../Middlewares/roleAuthMiddleware.js";
 const routes = express.Router();
 
 //----Route for Register user-----//
@@ -35,5 +40,16 @@ routes.post("/adminSignup", AdminSignup);
 
 // TODOs ----Route for Admin login -----//
 routes.get("/listUsers", ListUsers);
+
+// TODOs ----Route for Admin login -----//
+routes.get("/roleUsers", RoleUser);
+
+// TODOs ----Route for Admin login -----//
+routes.post(
+  "/updateRole",
+  verifyToken,
+  authorizeRole("admin", "manager"),
+  UpdateRole
+);
 
 export default routes;

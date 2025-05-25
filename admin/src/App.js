@@ -9,6 +9,8 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import UpdateProduct from "./Components/Pages/UpdateProduct";
+import CreateUser from "./Components/Pages/CreateUser";
+import Teams from "./Components/Pages/Teams";
 
 export const currency = "$ ";
 
@@ -66,6 +68,11 @@ function App() {
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
                 <Route path="/users" element={<Users token={token} />} />
+                <Route
+                  path="/create_user"
+                  element={<CreateUser token={token} />}
+                />
+                <Route path="/teams" element={<Teams token={token} />} />
                 <Route
                   path="/updateProduct/:id"
                   element={<UpdateProduct token={token} />}
