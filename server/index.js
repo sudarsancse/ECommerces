@@ -1,4 +1,5 @@
-// server/index.js
+import cluster from "cluster";
+import os from "os";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -10,40 +11,60 @@ import CartRoutes from "./Routers/CartRouts.js";
 import PaymentRoutes from "./Routers/PaymentRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
 
-const app = express();
+const MONGO = process.env.MONGO_URL;
+const PORT = process.env.PORT || 4000;
 
-// ----- MONGODB CONNECTION ----- //
-// Vercel runs serverless functions, so we need to check if a connection exists
-// and reuse it to avoid multiple connections.
-let isConnected = false;
+const numCPUs = os.cpus().length;
 
-const connectDB = async () => {
-  if (isConnected) return;
-  try {
-    await mongoose.connect(process.env.MONGO_URL);
-    isConnected = true;
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection failed:", error);
+if (cluster.isPrimary) {
+  console.log(`Primary process ${process.pid} is running`);
+  console.log(`Forking ${numCPUs} workers...\n`);
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
   }
-};
 
-// ----- CLOUDINARY CONFIG ----- //
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET_KEY,
-});
+  cluster.on("exit", (worker) => {
+    console.log(`Worker ${worker.process.pid} died. Restarting...`);
+    cluster.fork();
+  });
+} else {
+  const app = express();
 
-// ----- MIDDLEWARE ----- //
-app.use(express.json());
-app.use(cors());
+  //----- DNS CONFIG ------//
+  // import dns from "node:dns/promises";
+  // dns.setServers(["1.1.1.1", "1.0.0.1"]);
 
-// ----- ROUTES ----- //
-app.use("/", routes);
-app.use("/", productRoutes);
-app.use("/", CartRoutes);
-app.use("/payment", PaymentRoutes);
+  //-----MONGODB CONNECTION-----//
+  mongoose
+    .connect(MONGO)
+    .then(() => {
+      console.log(`Worker ${process.pid} connected to DB`);
+    })
+    .catch((error) => {
+      console.error(`MongoDb Connection failed : ${error}`);
+    });
+
+  // *-----CLOUDINARY CONNECTION-----//
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET_KEY,
+  });
+
+  app.use(express.json());
+  app.use(cors());
+
+  //! -------------- ALL ROUTES--------------
+  app.use("/", routes);
+  app.use("/", productRoutes);
+  app.use("/", CartRoutes);
+  app.use("/payment", PaymentRoutes);
+
+  app.listen(PORT, () => {
+    console.log(`Worker ${process.pid} started on port ${PORT}`);
+  });
+}
 
 // ----- EXPORT FOR VERCEL ----- //
 export default async function handler(req, res) {
