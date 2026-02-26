@@ -13,6 +13,7 @@ import CreateUser from "./Components/Pages/CreateUser";
 import Teams from "./Components/Pages/Teams";
 
 export const currency = "$ ";
+export const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 function App() {
   const [token, setToken] = useState(() => {

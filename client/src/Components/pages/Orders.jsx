@@ -3,6 +3,7 @@ import { ShopContext } from "../contex/ShopContex";
 import Tittle from "../component/Tittle";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { BASE_URL } from "../../App";
 
 function Orders() {
   const { token, currency } = useContext(ShopContext);
@@ -15,9 +16,9 @@ function Orders() {
         return null;
       }
       const res = await axios.post(
-        "/payment/userOrders",
+        `${BASE_URL}/payment/userOrders`,
         {},
-        { headers: { token } }
+        { headers: { token } },
       );
 
       if (res.data.success) {

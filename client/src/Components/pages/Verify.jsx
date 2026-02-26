@@ -3,6 +3,7 @@ import { ShopContext } from "../contex/ShopContex";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { BASE_URL } from "../../App";
 
 function Verify() {
   const { navigate, setCartItems, token } = useContext(ShopContext);
@@ -18,9 +19,9 @@ function Verify() {
       }
 
       const res = await axios.post(
-        "/payment/verifyStripe",
+        `${BASE_URL}/payment/verifyStripe`,
         { success, orderId },
-        { headers: { token } }
+        { headers: { token } },
       );
       console.log(res.data);
 

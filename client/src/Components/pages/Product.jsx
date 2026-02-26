@@ -4,6 +4,7 @@ import { ShopContext } from "../contex/ShopContex";
 import { assets } from "../assets/assets";
 import RelatedProduct from "../component/RelatedProduct";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../App";
 
 function Product() {
   const { productId } = useParams();

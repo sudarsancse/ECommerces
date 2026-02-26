@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { ShopContext } from "../contex/ShopContex";
+import { BASE_URL } from "../../App";
 
 function Login() {
   const [formData, setFromData] = useState({});
@@ -42,7 +43,7 @@ function Login() {
     }
     if (!/[A-Z]/.test(password)) {
       return toast.error(
-        "Password must include at least one uppercase letter."
+        "Password must include at least one uppercase letter.",
       );
     }
     if (!/\d/.test(password)) {
@@ -51,12 +52,12 @@ function Login() {
 
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
       return toast.error(
-        "Password must include at least one special character."
+        "Password must include at least one special character.",
       );
     }
     if (password.length < 8) {
       return toast.error(
-        "Please enter a stronger password (at least 8 characters)"
+        "Please enter a stronger password (at least 8 characters)",
       );
     }
     if (currentState === "Sign up" && password !== cpassword) {
@@ -65,7 +66,7 @@ function Login() {
 
     try {
       if (currentState === "Sign up") {
-        const res = await fetch("/register", {
+        const res = await fetch(`${BASE_URL}/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +83,7 @@ function Login() {
           toast.success(data.message);
         }
       } else {
-        const res = await fetch("/login", {
+        const res = await fetch(`${BASE_URL}/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

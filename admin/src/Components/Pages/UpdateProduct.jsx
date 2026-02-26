@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
+import { BASE_URL } from "../../App";
 
 function UpdateProduct({ token }) {
   const { id } = useParams();
@@ -21,7 +22,7 @@ function UpdateProduct({ token }) {
 
   const fetchProductData = async () => {
     try {
-      const response = await axios.post("/singleProduct", { id });
+      const response = await axios.post(`${BASE_URL}/singleProduct`, { id });
 
       const product = response.data.data;
 
@@ -66,9 +67,13 @@ function UpdateProduct({ token }) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post(`/updateProduct/${id}`, productData, {
-        headers: { token },
-      });
+      const res = await axios.post(
+        `${BASE_URL}/updateProduct/${id}`,
+        productData,
+        {
+          headers: { token },
+        },
+      );
       if (res.data.message) {
         toast.success(res.data.message);
       } else {

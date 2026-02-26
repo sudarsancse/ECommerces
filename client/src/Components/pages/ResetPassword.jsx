@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { ShopContext } from "../contex/ShopContex";
+import { BASE_URL } from "../../App";
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -29,7 +30,7 @@ function ResetPassword() {
 
     if (!/[A-Z]/.test(newPassword && confirmPassword)) {
       return toast.error(
-        "Password must include at least one uppercase letter."
+        "Password must include at least one uppercase letter.",
       );
     }
     if (!/\d/.test(newPassword && confirmPassword)) {
@@ -37,13 +38,13 @@ function ResetPassword() {
     }
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword && confirmPassword)) {
       return toast.error(
-        "Password must include at least one special character."
+        "Password must include at least one special character.",
       );
     }
 
     try {
       const ID = id;
-      const res = await axios.post(`/updated-password/${ID}`, {
+      const res = await axios.post(`${BASE_URL}/updated-password/${ID}`, {
         newPassword,
         confirmPassword,
       });

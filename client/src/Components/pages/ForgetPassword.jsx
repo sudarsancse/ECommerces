@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { ShopContext } from "../contex/ShopContex";
+import { BASE_URL } from "../../App";
 
 function ForgetPassword() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ function ForgetPassword() {
     }
 
     try {
-      const res = await fetch("/send-otp", {
+      const res = await fetch(`${BASE_URL}/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +43,7 @@ function ForgetPassword() {
     }
 
     try {
-      const res = await fetch("/verify-otp", {
+      const res = await fetch(`${BASE_URL}/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

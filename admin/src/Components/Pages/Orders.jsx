@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { assets } from "../assets/assets";
 import { currency } from "../../App";
+import { BASE_URL } from "../../App";
 
 function Orders({ token }) {
   const [orders, setOrders] = useState([]);
@@ -14,9 +15,9 @@ function Orders({ token }) {
 
     try {
       const res = await axios.post(
-        "/payment/allOrders",
+        `${BASE_URL}/payment/allOrders`,
         {},
-        { headers: { token } }
+        { headers: { token } },
       );
       console.log(res.data);
 
@@ -33,9 +34,9 @@ function Orders({ token }) {
   const statusHandler = async (e, orderId) => {
     try {
       const res = await axios.post(
-        "/payment/status",
+        `${BASE_URL}/payment/status`,
         { orderId, status: e.target.value },
-        { headers: { token } }
+        { headers: { token } },
       );
       console.log(res.data.message);
 

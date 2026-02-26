@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../App";
 
 function Users() {
   const [allUsers, setAllUsers] = useState([]);
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/listUsers");
+      const res = await axios.get(`${BASE_URL}/listUsers`);
 
       if (res.data.success) {
         setAllUsers(res.data.Users);

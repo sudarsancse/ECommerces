@@ -5,6 +5,7 @@ import { currency } from "../../App";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { BASE_URL } from "../../App";
 
 function List({ token }) {
   const [list, setList] = useState([]);
@@ -12,7 +13,7 @@ function List({ token }) {
 
   const fetchList = async () => {
     try {
-      const res = await axios.get("/listProduct");
+      const res = await axios.get(`${BASE_URL}/listProduct`);
 
       if (res.data.success) {
         setList(res.data.products);
@@ -30,9 +31,9 @@ function List({ token }) {
   const removProduct = async (id) => {
     try {
       const res = await axios.post(
-        "/removingProduct",
+        `${BASE_URL}/removingProduct`,
         { id },
-        { headers: { token } }
+        { headers: { token } },
       );
       if (res.data.success) {
         toast.success(res.data.message);

@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../../App";
 
 export const ShopContext = createContext();
 
@@ -37,7 +38,11 @@ const ShopContextProvider = (props) => {
 
     if (token) {
       try {
-        await axios.post("/add-cart", { itemId, size }, { headers: { token } });
+        await axios.post(
+          `${BASE_URL}/add-cart`,
+          { itemId, size },
+          { headers: { token } },
+        );
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -69,9 +74,9 @@ const ShopContextProvider = (props) => {
     if (token) {
       try {
         await axios.post(
-          "/update-cart",
+          `${BASE_URL}/update-cart`,
           { itemId, size, quantity },
-          { headers: { token } }
+          { headers: { token } },
         );
       } catch (error) {
         console.log(error);
@@ -98,7 +103,7 @@ const ShopContextProvider = (props) => {
 
   const getProductsData = async () => {
     try {
-      const res = await axios.get("/listProduct");
+      const res = await axios.get(`${BASE_URL}/listProduct`);
       if (res.data.success) {
         setProducts(res.data.products);
       } else {
@@ -111,7 +116,11 @@ const ShopContextProvider = (props) => {
   };
   const getUserCart = async (token) => {
     try {
-      const res = await axios.post("/get-cart", {}, { headers: { token } });
+      const res = await axios.post(
+        `${BASE_URL}/get-cart`,
+        {},
+        { headers: { token } },
+      );
       if (res.data.success) {
         setCartItems(res.data.cartData);
       }

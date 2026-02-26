@@ -18,6 +18,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./Components/pages/Verify";
 
+export const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 function App() {
   return (
     <div className=" px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">

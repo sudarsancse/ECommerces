@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { ShopContext } from "../contex/ShopContex";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../App";
 
 function PlaceOrder() {
   const [method, setMethod] = useState("cod");
@@ -50,9 +51,9 @@ function PlaceOrder() {
         console.log(response);
         try {
           const { data } = await axios.post(
-            "/payment/verifyRazoppay",
+            `${BASE_URL}/payment/verifyRazoppay`,
             response,
-            { headers: { token } }
+            { headers: { token } },
           );
           if (data.success) {
             navigate("/order");
@@ -75,7 +76,7 @@ function PlaceOrder() {
         for (const item in cartItems[items]) {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(
-              products.find((product) => product._id === items)
+              products.find((product) => product._id === items),
             );
             if (itemInfo) {
               itemInfo.size = item;
@@ -94,7 +95,7 @@ function PlaceOrder() {
 
       switch (method) {
         case "cod":
-          const res = await axios.post("/payment/cod", OrderData, {
+          const res = await axios.post(`${BASE_URL}/payment/cod`, OrderData, {
             headers: { token },
           });
 
@@ -108,9 +109,13 @@ function PlaceOrder() {
           break;
 
         case "stripe":
-          const resStripe = await axios.post("/payment/stripe", OrderData, {
-            headers: { token },
-          });
+          const resStripe = await axios.post(
+            `${BASE_URL}/payment/stripe`,
+            OrderData,
+            {
+              headers: { token },
+            },
+          );
           if (resStripe.data.success) {
             const { session_url } = resStripe.data;
             window.location.replace(session_url);
@@ -120,9 +125,13 @@ function PlaceOrder() {
           break;
 
         case "razorpay":
-          const resRezorpay = await axios.post("/payment/razorpay", OrderData, {
-            headers: { token },
-          });
+          const resRezorpay = await axios.post(
+            `${BASE_URL}/payment/razorpay`,
+            OrderData,
+            {
+              headers: { token },
+            },
+          );
           if (resRezorpay.data.success) {
             initPay(resRezorpay.data.order);
           }

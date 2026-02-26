@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../App";
 
 function Teams({ token }) {
   const [loginUser, setLoginUser] = useState({});
@@ -9,7 +10,7 @@ function Teams({ token }) {
   // Fetch all users
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/roleUsers", {
+      const res = await axios.get(`${BASE_URL}/roleUsers`, {
         headers: {
           token: token,
         },
@@ -30,21 +31,21 @@ function Teams({ token }) {
   const handleRoleChange = async (userId, newRole, currentRole) => {
     try {
       const res = await axios.post(
-        "/updateRole",
+        `${BASE_URL}/updateRole`,
         { userId, newRole, currentRole },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (res.data.success) {
         toast.success("Role updated successfully");
         setAllUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user._id === userId ? { ...user, role: newRole } : user
-          )
+            user._id === userId ? { ...user, role: newRole } : user,
+          ),
         );
       } else {
         toast.error(res.data.message);

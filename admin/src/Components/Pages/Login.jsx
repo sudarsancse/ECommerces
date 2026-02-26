@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { BASE_URL } from "../../App";
 
 function Login({ setToken }) {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ function Login({ setToken }) {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/admin", {
+      const res = await axios.post(`${BASE_URL}/admin`, {
         email,
         password,
       });

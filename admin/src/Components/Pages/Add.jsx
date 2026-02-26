@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../App";
 
 function Add({ token }) {
   const [image1, setImage1] = useState(false);
@@ -50,7 +51,7 @@ function Add({ token }) {
       image3 && fromData.append("image3", image3);
       image4 && fromData.append("image4", image4);
 
-      const res = await axios.post("/addProduct", fromData, {
+      const res = await axios.post(`${BASE_URL}/addProduct`, fromData, {
         headers: { token: token },
       });
       if (res.data.message) {
@@ -221,7 +222,7 @@ function Add({ token }) {
               setSizes((prev) =>
                 prev.includes("S")
                   ? prev.filter((item) => item !== "S")
-                  : [...prev, "S"]
+                  : [...prev, "S"],
               )
             }
           >
@@ -238,7 +239,7 @@ function Add({ token }) {
               setSizes((prev) =>
                 prev.includes("M")
                   ? prev.filter((item) => item !== "M")
-                  : [...prev, "M"]
+                  : [...prev, "M"],
               )
             }
           >
@@ -255,7 +256,7 @@ function Add({ token }) {
               setSizes((prev) =>
                 prev.includes("X")
                   ? prev.filter((item) => item !== "X")
-                  : [...prev, "X"]
+                  : [...prev, "X"],
               )
             }
           >
@@ -272,7 +273,7 @@ function Add({ token }) {
               setSizes((prev) =>
                 prev.includes("XL")
                   ? prev.filter((item) => item !== "XL")
-                  : [...prev, "XL"]
+                  : [...prev, "XL"],
               )
             }
           >
@@ -289,7 +290,7 @@ function Add({ token }) {
               setSizes((prev) =>
                 prev.includes("XXL")
                   ? prev.filter((item) => item !== "XXL")
-                  : [...prev, "XXL"]
+                  : [...prev, "XXL"],
               )
             }
           >
