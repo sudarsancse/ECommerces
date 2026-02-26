@@ -11,7 +11,7 @@ function Policy() {
           alt="exchange-icon"
         />
         <p className=" font-semibold">Easy Exchange Policy</p>
-        <p className=" text-gray-400">We offer hassle exchange policy </p>
+        <p className=" text-gray-500">We offer hassle exchange policy </p>
       </div>
       <div>
         <img
@@ -20,7 +20,7 @@ function Policy() {
           alt="quality_icon"
         />
         <p className=" font-semibold">7 Days Return Policy</p>
-        <p className=" text-gray-400">We provide 7 days free return policy </p>
+        <p className=" text-gray-500">We provide 7 days free return policy </p>
       </div>
       <div>
         <img
@@ -29,7 +29,7 @@ function Policy() {
           alt="support_img"
         />
         <p className=" font-semibold">Best customer support</p>
-        <p className=" text-gray-400">We provide 24/7 customer support </p>
+        <p className=" text-gray-500">We provide 24/7 customer support </p>
       </div>
     </div>
   );

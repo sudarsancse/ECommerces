@@ -35,21 +35,24 @@ function App() {
       />
       <Navbar />
       <SearchBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/order" element={<Orders />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/contact" element={<Contect />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/product/:productId" element={<Product />} />
-        <Route path="/collection" element={<Collection />} />
-        <Route path="/forgetPassword" element={<ForgetPassword />} />
-        <Route path="/resetPassword/:id" element={<ResetPassword />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      {/* ✅ Main Landmark Added Here */}
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/order" element={<Orders />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/contact" element={<Contect />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/product/:productId" element={<Product />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/forgetPassword" element={<ForgetPassword />} />
+          <Route path="/resetPassword/:id" element={<ResetPassword />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );

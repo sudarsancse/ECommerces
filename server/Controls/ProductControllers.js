@@ -20,7 +20,7 @@ export const addProduct = async (req, res) => {
     const image4 = req.files.image4 && req.files.image4[0];
 
     const images = [image1, image2, image3, image4].filter(
-      (item) => item != undefined
+      (item) => item != undefined,
     );
 
     let imageURL = await Promise.all(
@@ -31,7 +31,7 @@ export const addProduct = async (req, res) => {
         });
 
         return result.secure_url;
-      })
+      }),
     );
 
     const productData = {
@@ -120,7 +120,7 @@ export const updateProduct = async (req, res) => {
         bestseller,
         images,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedProduct) {

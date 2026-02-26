@@ -14,6 +14,10 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
+//----- DNS CONFIG ------//
+// import dns from "node:dns/promises";
+// dns.setServers(["1.1.1.1", "1.0.0.1"]);
+
 //-----MONGODB CONNECTION-----//
 mongoose
   .connect(MONGO)

@@ -33,7 +33,10 @@ export const RegisterUser = async (req, res) => {
     }
 
     if (password.length < 8) {
-      res.json({ success: false, message: "Please enter a strong password!" });
+      return res.json({
+        success: false,
+        message: "Please enter a strong password!",
+      });
     }
 
     //? password hasing
@@ -203,7 +206,7 @@ export const AdminLogin = async (req, res) => {
       const token = jwt.sign(
         { id: existUser._id, role: existUser.role },
         process.env.JSONWEBTOKEN,
-        { expiresIn: "1h" }
+        { expiresIn: "1h" },
       );
 
       const role = existUser.role;
